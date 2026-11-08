@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LeoBernauhandRaiser</title>
+<style>
+:root{--bg:#f7f7f5;--card:#fff;--tx:#151515;--mu:#8b8b86;--ln:#e8e8e3;--ok:#2f7d4f;--rd:#b3402f;--gold:#c9a961;--gg:linear-gradient(135deg,#a8842f,#e8d393 45%,#b08a38)}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--tx);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+[hidden]{display:none!important}
+main{position:relative;z-index:1;min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px 72px}
+
+/* Marmor-Hintergrund (nur Startseiten) */
+#bg{position:fixed;inset:0;z-index:0;background:radial-gradient(120% 90% at 18% 8%,#fff 0,transparent 60%),radial-gradient(100% 80% at 92% 92%,#e6e5e0 0,transparent 62%),#f2f1ed}
+#bg svg{width:100%;height:100%;display:block}
+
+/* Logo */
+.logo{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-weight:400;font-size:clamp(24px,4.6vw,56px);letter-spacing:.02em;text-align:center;white-space:nowrap;line-height:1.1}
+.logo .h{font-size:2.1em;font-style:italic;background:var(--gg);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding:0 .06em}
+.gl{width:110px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:20px auto}
+h2{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-weight:400;font-size:clamp(26px,3.6vw,38px);text-align:center}
+.sub{color:var(--mu);margin:10px 0 34px;text-align:center;max-width:460px;line-height:1.5}
+
+button{font:inherit;cursor:pointer;border:1px solid var(--tx);background:var(--tx);color:#fff;padding:16px 32px;border-radius:14px;font-size:17px;transition:.2s}
+button:active{transform:scale(.97)}
+button.ghost{background:transparent;color:var(--tx);border-color:var(--ln)}
+button.ok{background:var(--ok);border-color:var(--ok)}
+button.rd{background:transparent;color:var(--rd);border-color:var(--rd)}
+.row{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.role{min-width:220px;padding:30px 44px;font-size:20px;letter-spacing:.04em;background:rgba(255,255,255,.72);color:var(--tx);border:1px solid var(--gold);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 6px 24px rgba(120,100,50,.08)}
+.role:hover{box-shadow:0 8px 30px rgba(168,132,47,.28);background:#fff}
+.gold{background:var(--gg);border-color:#b08a38;color:#2a2112}
+.back{background:rgba(255,255,255,.6);color:var(--tx);border-color:var(--ln)}
+
+.card{background:rgba(255,255,255,.78);border:1px solid #e3dccb;border-radius:22px;padding:28px;width:100%;max-width:420px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 10px 40px rgba(120,100,50,.08)}
+label{display:block;font-size:13px;color:var(--mu);margin:16px 0 6px}
+label:first-child{margin-top:0}
+label i{font-style:normal;opacity:.7}
+input{font:inherit;width:100%;padding:14px 16px;border:1px solid var(--ln);border-radius:12px;background:#fbfbfa;font-size:17px;outline:none}
+input:focus{border-color:var(--gold)}
+#cd{letter-spacing:.4em;text-align:center;font-size:24px}
+.card .row{margin-top:24px;flex-wrap:nowrap}.card button{flex:1;padding:14px}
+.note{color:var(--mu);text-align:center;line-height:1.5;margin-bottom:6px}
+
+/* Klassenraum */
+#room{justify-content:flex-start}
+.top{width:100%;max-width:1000px;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px}
+.top small{color:var(--mu);font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+.code{font-size:clamp(34px,6vw,56px);font-weight:300;letter-spacing:.18em}
+.grid{width:100%;max-width:1000px;display:grid;gap:24px;grid-template-columns:1fr}
+@media(min-width:800px) and (orientation:landscape){.grid{grid-template-columns:1.6fr 1fr;align-items:start}}
+.list{display:flex;flex-direction:column;gap:10px}
+.item{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:16px}
+.item.me{border-color:var(--tx)}
+.pos{color:var(--mu);width:28px;font-size:18px}
+.nm{flex:1;min-width:0}.nm b{display:block;font-weight:500;font-size:20px;overflow-wrap:anywhere}.nm span{color:var(--mu);font-size:14px}
+.t{color:var(--mu);font-variant-numeric:tabular-nums;font-size:15px;white-space:nowrap}
+.item button{padding:10px 18px;font-size:15px}
+.empty{color:var(--mu);text-align:center;padding:40px 0}
+.side{display:flex;flex-direction:column;gap:12px}
+.side button{width:100%}
+.status{font-size:clamp(20px,3vw,26px);font-weight:300;text-align:center;margin-bottom:8px}
+#toast{position:fixed;top:calc(16px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);background:var(--tx);color:#fff;padding:12px 22px;border-radius:12px;font-size:15px;z-index:9;max-width:90%;text-align:center}
+footer{position:fixed;z-index:2;right:max(18px,env(safe-area-inset-right));bottom:calc(14px + env(safe-area-inset-bottom));font-size:12px;color:var(--mu);letter-spacing:.06em}
+</style>
+</head>
+<body>
+<div id="bg" aria-hidden="true">
+  <svg preserveAspectRatio="xMidYMid slice">
+    <filter id="v" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".0035 .008" numOctaves="6" seed="11"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 .42  0 0 0 0 .42  0 0 0 0 .45  1 0 0 0 0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0 0 0 0 0 0 0 0 .45 0 0 .3 0 0 0 0 0 0 0 0"/></feComponentTransfer>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#v)"/>
+  </svg>
+</div>
+<div id="toast" hidden></div>
+
+<main id="home">
+  <h1 class="logo">LeoBernau<span class="h">Hand</span>Raiser</h1>
+  <div class="gl"></div>
+  <p class="sub">Melde dich digital, die Lehrkraft kommt zu dir.</p>
+  <div class="row">
+    <button class="role" id="bT">Lehrer</button>
+    <button class="role" id="bS">Schüler</button>
+  </div>
+</main>
+
+<main id="teacher" hidden>
+  <h2>Raum erstellen</h2>
+  <div class="gl"></div>
+  <p class="sub">Dein Raum bekommt einen eigenen 4-stelligen Code. Diesen geben deine Schüler zum Beitreten ein.</p>
+  <div class="row">
+    <button class="back" id="bTB">Zurück</button>
+    <button class="gold" id="bCR">Raum erstellen</button>
+  </div>
+</main>
+
+<main id="join" hidden>
+  <h2>Raum beitreten</h2>
+  <div class="gl"></div>
+  <p class="sub">Den Code findest du oben bei der Lehrkraft.</p>
+  <div class="card">
+    <label for="cd">Raumcode</label>
+    <input id="cd" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off">
+    <label for="fn">Vorname</label>
+    <input id="fn" autocomplete="off">
+    <label for="ln">Nachname <i>(optional)</i></label>
+    <input id="ln" autocomplete="off">
+    <label for="nn">Spitzname <i>(optional)</i></label>
+    <input id="nn" autocomplete="off">
+    <div class="row"><button class="back" id="bB">Zurück</button><button class="gold" id="bJ">Beitreten</button></div>
+  </div>
+</main>
+
+<main id="room" hidden>
+  <div class="top"><div><small>Raumcode</small><div class="code" id="code"></div></div><button class="ghost" id="bL">Verlassen</button></div>
+  <div class="grid">
+    <div class="list" id="list"></div>
+    <div class="side">
+      <div id="stu" hidden>
+        <div class="status" id="status"></div>
+        <button id="bH">Hand heben</button>
+      </div>
+      <div id="tools" hidden>
+        <div class="side">
+          <button class="ghost" id="bC">Liste leeren</button>
+          <button class="rd" id="bE">Raum beenden</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>Created by Leo Bernau</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAi7vQ4zRZ2IsPECGGvfPH7v5Cji3EB_wk",
+  authDomain: "leobernauhandraiser.firebaseapp.com",
+  databaseURL: "https://leobernauhandraiser-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "leobernauhandraiser",
+  appId: "1:917059040709:web:5073bf533ef5a3a32d47ac"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+let off = 0;
+db.ref(".info/serverTimeOffset").on("value", s => off = s.val() || 0);
+const now = () => Date.now() + off;
+const $ = id => document.getElementById(id);
+const S = {};
+const KEEP = "lbhr";
+
+function view(id){
+  ["home","teacher","join","room"].forEach(v => $(v).hidden = v !== id);
+  $("bg").hidden = id === "room";
+}
+function toast(m){ const t=$("toast"); t.textContent=m; t.hidden=false; clearTimeout(toast.h); toast.h=setTimeout(()=>t.hidden=true,3500); }
+function save(){ try{ localStorage.setItem(KEEP, JSON.stringify({role:S.role,code:S.code,name:S.name})); }catch(e){} }
+function forget(){ try{ localStorage.removeItem(KEEP); }catch(e){} }
+
+$("bT").onclick = () => view("teacher");
+$("bS").onclick = () => view("join");
+$("bTB").onclick = () => view("home");
+$("bB").onclick = () => view("home");
+
+$("bCR").onclick = async () => {
+  for (let i=0;i<30;i++){
+    const code = String(Math.floor(Math.random()*10000)).padStart(4,"0");
+    try{
+      const r = await db.ref("rooms/"+code).transaction(c => (c===null || now()-(c.created||0) > 432e5) ? {created: now()} : undefined);
+      if (r.committed){ enter("teacher", code); return; }
+    }catch(e){ return toast("Keine Verbindung zum Server."); }
+  }
+  toast("Kein freier Code gefunden. Bitte nochmal versuchen.");
+};
+$("cd").oninput = e => e.target.value = e.target.value.replace(/\D/g,"");
+
+$("bJ").onclick = async () => {
+  const f=$("fn").value.trim(), l=$("ln").value.trim(), n=$("nn").value.trim(), c=$("cd").value.trim();
+  if (!/^\d{4}$/.test(c)) return toast("Der Raumcode hat 4 Ziffern.");
+  if (!f) return toast("Bitte gib deinen Vornamen ein.");
+  try{
+    const s = await db.ref("rooms/"+c).once("value");
+    if (!s.exists()) return toast("Diesen Raum gibt es nicht.");
+  }catch(e){ return toast("Keine Verbindung zum Server."); }
+  S.name = {f,l,n};
+  enter("student", c);
+};
+
+function keyOf(nm){
+  const s = (nm.f+" "+nm.l).toLowerCase().replace(/\s+/g," ").trim();
+  return encodeURIComponent(s).replace(/\./g,"%2E");
+}
+
+function enter(role, code){
+  S.role=role; S.code=code; S.ref=db.ref("rooms/"+code);
+  S.key = role==="student" ? keyOf(S.name) : null;
+  $("code").textContent = code;
+  $("stu").hidden = role!=="student";
+  $("tools").hidden = role!=="teacher";
+  view("room"); save();
+  S.ref.on("value", snap => {
+    if (!snap.exists()){ leave("Der Raum wurde beendet."); return; }
+    S.q = Object.entries(snap.val().queue||{}).map(([k,v])=>({k,...v}))
+      .sort((a,b)=>(a.ts||Infinity)-(b.ts||Infinity));
+    render();
+  });
+}
+
+function leave(msg){
+  if (S.ref) S.ref.off();
+  S.ref=null; forget(); view("home");
+  if (msg) toast(msg);
+}
+
+function el(tag, cls, txt){ const e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; }
+function fmt(ms){ const s=Math.max(0,Math.floor(ms/1000)); return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")+" min"; }
+
+function render(){
+  const list=$("list"); list.innerHTML="";
+  if (!S.q.length) list.append(el("div","empty","Niemand wartet gerade."));
+  S.q.forEach((p,i)=>{
+    const it = el("div","item"+(p.k===S.key?" me":""));
+    it.append(el("div","pos",String(i+1)));
+    const nm = el("div","nm"); nm.append(el("b",null,(p.f+" "+(p.l||"")).trim()));
+    if (p.n) nm.append(el("span",null,p.n));
+    it.append(nm);
+    const t = el("div","t"); t.dataset.ts = p.ts||""; it.append(t);
+    if (S.role==="teacher"){
+      const b = el("button","ok","Erledigt");
+      b.onclick = () => S.ref.child("queue/"+p.k).remove();
+      it.append(b);
+    }
+    list.append(it);
+  });
+  if (S.role==="student"){
+    const idx = S.q.findIndex(p=>p.k===S.key);
+    $("status").textContent = idx<0 ? "Du hast die Hand unten." : "Du bist der "+(idx+1)+". in der Warteschlange.";
+    const b=$("bH"); b.textContent = idx<0 ? "Hand heben" : "Hand senken"; b.className = idx<0 ? "" : "ghost";
+  }
+  tick();
+}
+
+function tick(){
+  document.querySelectorAll(".t").forEach(e=>{ e.textContent = e.dataset.ts ? "wartet "+fmt(now()-Number(e.dataset.ts)) : ""; });
+}
+setInterval(tick, 1000);
+
+$("bH").onclick = async () => {
+  const mine = S.q.some(p=>p.k===S.key);
+  if (mine) return S.ref.child("queue/"+S.key).remove();
+  const r = await S.ref.child("queue/"+S.key).transaction(c => c===null ? {f:S.name.f,l:S.name.l,n:S.name.n,ts:now()} : undefined);
+  if (!r.committed) toast("Dieser Name steht schon in der Liste.");
+};
+$("bC").onclick = () => { if (confirm("Liste wirklich leeren?")) S.ref.child("queue").remove(); };
+$("bE").onclick = () => { if (confirm("Raum für alle beenden?")) S.ref.remove(); };
+$("bL").onclick = () => {
+  if (S.role==="student" && S.ref) S.ref.child("queue/"+S.key).remove();
+  if (S.role==="teacher" && !confirm("Du verlässt den Raum. Er bleibt bestehen, bis du ihn beendest. Fortfahren?")) return;
+  leave();
+};
+
+// Nach Neuladen automatisch wieder verbinden
+try{
+  const s = JSON.parse(localStorage.getItem(KEEP)||"null");
+  if (s && s.code) db.ref("rooms/"+s.code).once("value").then(r=>{
+    if (r.exists()){ S.name=s.name; enter(s.role, s.code); } else forget();
+  });
+}catch(e){}
+</script>
+</body>
+</html>
